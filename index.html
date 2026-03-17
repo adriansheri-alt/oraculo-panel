@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oráculo — Panel de Socios</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* PALETA CÁLIDA — fondo arena, cards blanco roto, acentos olivo */
+  --bg:        #ece8df;   /* arena cálido — fondo principal */
+  --bg-warm:   #e4dfd5;   /* arena un poco más oscuro — secciones */
+  --card:      #f5f2ec;   /* blanco roto cálido — cards */
+  --card-alt:  #efeae0;   /* card secundario */
+
+–ink:       #2c2a24;   /* carbón oscuro — texto principal */
+–ink-mid:   #5a5549;   /* carbón medio — texto secundario */
+–ink-soft:  #8c8679;   /* carbón suave — texto terciario */
+–ink-faint: rgba(44,42,36,0.12); /* separadores, borders */
+–ink-faint2:rgba(44,42,36,0.2);
+
+–olive:     #5c6e38;   /* verde olivo oscuro */
+–olive2:    #718742;   /* verde olivo medio — acento principal */
+–olive3:    #8fa55a;   /* verde olivo claro */
+–olive-bg:  rgba(113,135,66,0.1);
+–olive-bd:  rgba(113,135,66,0.28);
+
+–green:     #3e7a4a;
+–green-bg:  rgba(62,122,74,0.1);
+–green-bd:  rgba(62,122,74,0.25);
+
+–amber:     #9a6e2a;
+–amber-bg:  rgba(154,110,42,0.1);
+–amber-bd:  rgba(154,110,42,0.25);
+
+–red:       #8a3d30;
+–red-bg:    rgba(138,61,48,0.09);
+–red-bd:    rgba(138,61,48,0.22);
+
+–teal:      #307a72;
+–teal-bg:   rgba(48,122,114,0.1);
+–teal-bd:   rgba(48,122,114,0.25);
+
+–shadow-sm: 0 1px 3px rgba(44,42,36,0.08), 0 1px 2px rgba(44,42,36,0.04);
+–shadow:    0 2px 8px rgba(44,42,36,0.08), 0 1px 3px rgba(44,42,36,0.06);
+–radius: 10px;
+–fh: ‘Rajdhani’, sans-serif;
+–fb: ‘Jost’, sans-serif;
+}
+
+- { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+background: var(–bg);
+color: var(–ink);
+font-family: var(–fb);
+font-weight: 300;
+min-height: 100vh;
+position: relative;
+}
+
+.wrap {
+max-width:1160px; margin:0 auto;
+padding:0 24px 80px;
+}
+
+/* ── HEADER ── */
+.hdr {
+padding:36px 0 28px;
+border-bottom:1px solid var(–ink-faint2);
+margin-bottom:28px;
+display:flex; align-items:flex-end; justify-content:space-between;
+gap:16px; flex-wrap:wrap;
+}
+
+.brand { display:flex; align-items:center; gap:16px; }
+.brand svg { width:44px; height:27px; }
+
+.btext h1 {
+font-family:var(–fh);
+font-size:1.9rem; font-weight:600;
+letter-spacing:0.22em; text-transform:uppercase;
+color:var(–ink); line-height:1;
+}
+.btext .sub {
+font-size:0.6rem; letter-spacing:0.26em;
+color:var(–ink-soft); text-transform:uppercase; margin-top:5px;
+}
+
+.hdr-r { display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+.utag { font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(–ink-soft); }
+
+.btn {
+font-family:var(–fb); font-size:0.68rem;
+letter-spacing:0.14em; text-transform:uppercase;
+padding:8px 16px; border-radius:5px; cursor:pointer; transition:all .2s;
+}
+.btn-outline {
+background:transparent;
+border:1px solid var(–ink-faint2);
+color:var(–ink-mid);
+}
+.btn-outline:hover { background:var(–ink-faint); color:var(–ink); }
+.btn-olive {
+background:var(–olive-bg);
+border:1px solid var(–olive-bd);
+color:var(–olive);
+}
+.btn-olive:hover { background:rgba(113,135,66,0.18); }
+
+/* ── SECTION LABEL ── */
+.slbl {
+font-family:var(–fh); font-size:0.68rem; font-weight:500;
+letter-spacing:0.28em; text-transform:uppercase;
+color:var(–ink-soft); margin-bottom:12px;
+display:flex; align-items:center; gap:12px;
+}
+.slbl::after { content:’’; flex:1; height:1px; background:var(–ink-faint); }
+
+/* ── NORTHSTAR ── */
+.ns {
+display:grid; grid-template-columns:repeat(3,1fr);
+gap:1px; background:var(–ink-faint);
+border:1px solid var(–ink-faint2); border-radius:var(–radius); overflow:hidden;
+margin-bottom:24px; box-shadow:var(–shadow-sm);
+}
+.ns-i { background:var(–card); padding:14px 18px; }
+.ns-l { font-size:0.57rem; letter-spacing:0.24em; text-transform:uppercase; color:var(–olive2); margin-bottom:5px; font-weight:400; }
+.ns-t { font-size:0.8rem; color:var(–ink-mid); line-height:1.45; font-style:italic; font-weight:200; }
+@media(max-width:620px){ .ns { grid-template-columns:1fr; } }
+
+/* ── SOCIOS ── */
+.socios { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:28px; }
+.slbl-s { font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase; color:var(–ink-soft); margin-right:4px; }
+.pill {
+display:flex; align-items:center; gap:7px;
+background:var(–card); border:1px solid var(–ink-faint2);
+border-radius:40px; padding:6px 12px 6px 8px;
+box-shadow:var(–shadow-sm); transition:box-shadow .2s;
+}
+.pill:hover { box-shadow:var(–shadow); }
+.av {
+width:22px; height:22px; border-radius:50%;
+background:var(–olive-bg); border:1px solid var(–olive-bd);
+display:flex; align-items:center; justify-content:center;
+font-family:var(–fh); font-size:0.7rem; font-weight:600; color:var(–olive);
+}
+.pn { font-size:0.78rem; color:var(–ink-mid); }
+.pp { font-size:0.62rem; color:var(–ink-soft); }
+
+/* ── KPI GRID ── */
+.kgrid {
+display:grid; grid-template-columns:repeat(4,1fr);
+gap:10px; margin-bottom:24px;
+}
+@media(max-width:860px){ .kgrid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:460px){ .kgrid { grid-template-columns:1fr; } }
+
+.kcard {
+background:var(–card);
+border:1px solid var(–ink-faint);
+border-radius:var(–radius);
+padding:16px 16px 13px;
+position:relative; overflow:hidden;
+box-shadow:var(–shadow-sm);
+transition:box-shadow .2s, transform .2s;
+animation:fadeUp .4s ease both;
+}
+.kcard:hover { box-shadow:var(–shadow); transform:translateY(-2px); }
+
+/* Color accent strip on top */
+.kcard::before {
+content:’’; position:absolute;
+top:0; left:0; right:0; height:3px;
+border-radius:var(–radius) var(–radius) 0 0;
+}
+.cg::before { background:var(–green); }
+.ca::before { background:var(–amber); }
+.cr::before { background:var(–red); }
+.ct::before { background:var(–teal); }
+.co::before { background:var(–olive2); }
+
+.klbl { font-size:0.57rem; letter-spacing:0.2em; text-transform:uppercase; color:var(–ink-soft); margin-bottom:9px; font-weight:400; }
+.kval { font-family:var(–fh); font-size:1.9rem; font-weight:600; letter-spacing:0.02em; line-height:1; margin-bottom:2px; }
+.cg .kval { color:var(–green); }
+.ca .kval { color:var(–amber); }
+.cr .kval { color:var(–red); }
+.ct .kval { color:var(–teal); }
+.co .kval { color:var(–olive); }
+.kunit { font-size:0.59rem; color:var(–ink-soft); letter-spacing:0.08em; margin-bottom:9px; }
+.knote { font-size:0.69rem; color:var(–ink-mid); line-height:1.4; padding-top:9px; border-top:1px solid var(–ink-faint); font-weight:300; }
+
+/* ── CHART ── */
+.chcard {
+background:var(–card); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:22px;
+margin-bottom:24px; box-shadow:var(–shadow-sm);
+}
+.chhead { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:10px; }
+.chtitle { font-size:0.59rem; letter-spacing:0.2em; text-transform:uppercase; color:var(–ink-soft); }
+.chleg { display:flex; gap:14px; flex-wrap:wrap; }
+.li { display:flex; align-items:center; gap:5px; font-size:0.59rem; color:var(–ink-soft); }
+.ld { width:8px; height:8px; border-radius:2px; }
+.bwrap {
+display:flex; align-items:flex-end; gap:8px;
+height:148px; padding-bottom:26px; position:relative;
+}
+.bwrap::after { content:’’; position:absolute; bottom:26px; left:0; right:0; height:1px; background:var(–ink-faint); }
+.bg-g { flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; position:relative; }
+.bi-in { display:flex; gap:2px; align-items:flex-end; }
+.b { width:14px; border-radius:3px 3px 0 0; cursor:default; position:relative; transition:opacity .2s; }
+.b:hover { opacity:.72; }
+.b:hover::before { content:attr(data-tip); position:absolute; bottom:calc(100% + 5px); left:50%; transform:translateX(-50%); background:var(–ink); color:#f5f2ec; font-size:0.58rem; padding:3px 7px; border-radius:3px; white-space:nowrap; z-index:10; pointer-events:none; }
+.bi { background:linear-gradient(to top, rgba(44,42,36,0.15), rgba(44,42,36,0.4)); }
+.bg { background:linear-gradient(to top, rgba(138,61,48,0.2), var(–red)); }
+.bep { background:linear-gradient(to top, rgba(62,122,74,0.2), var(–green)); }
+.ben { background:linear-gradient(to top, rgba(138,61,48,0.12), rgba(138,61,48,0.45)); }
+.bph { border:1px dashed var(–ink-faint2); background:none; height:16px!important; opacity:.4; }
+.blbl { font-size:0.53rem; letter-spacing:0.1em; color:var(–ink-soft); position:absolute; bottom:-18px; text-transform:uppercase; }
+
+/* ── EXCEL DOWNLOAD ── */
+.xcard {
+background:var(–card); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:18px 20px;
+margin-bottom:24px; display:flex; align-items:center; gap:16px;
+flex-wrap:wrap; box-shadow:var(–shadow-sm);
+}
+.xicon { width:42px; height:42px; background:var(–olive-bg); border:1px solid var(–olive-bd); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.25rem; flex-shrink:0; }
+.xinfo { flex:1; min-width:180px; }
+.xtitle { font-family:var(–fh); font-size:0.9rem; font-weight:600; letter-spacing:0.1em; color:var(–ink); margin-bottom:3px; }
+.xdesc { font-size:0.7rem; color:var(–ink-mid); font-weight:300; }
+.xmeta { font-size:0.57rem; letter-spacing:0.14em; text-transform:uppercase; color:var(–ink-soft); text-align:right; }
+.btn-dl {
+background:var(–olive-bg); border:1px solid var(–olive-bd);
+color:var(–olive); font-family:var(–fb); font-size:0.68rem;
+letter-spacing:0.16em; text-transform:uppercase;
+padding:9px 20px; border-radius:5px; cursor:pointer;
+text-decoration:none; display:inline-block; transition:all .2s; white-space:nowrap;
+}
+.btn-dl:hover { background:rgba(113,135,66,0.18); }
+
+/* ── DEUDA ── */
+.dcard {
+background:var(–card); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:20px;
+margin-bottom:24px; box-shadow:var(–shadow-sm);
+}
+.drow { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.drow:last-of-type { margin-bottom:0; }
+.dn { font-size:0.65rem; letter-spacing:0.08em; color:var(–ink-mid); width:130px; flex-shrink:0; font-weight:300; }
+.dtrack { flex:1; height:5px; background:var(–ink-faint); border-radius:3px; overflow:hidden; }
+.dfill { height:100%; border-radius:3px; background:linear-gradient(to right, var(–red), var(–amber)); }
+.dval { font-size:0.68rem; color:var(–ink-mid); text-align:right; width:96px; flex-shrink:0; }
+.dfoot { display:flex; justify-content:space-between; align-items:center; padding-top:12px; margin-top:12px; border-top:1px solid var(–ink-faint); }
+.dfl { font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:var(–ink-soft); }
+.dfv { font-family:var(–fh); font-size:1.45rem; font-weight:600; color:var(–amber); }
+
+/* ── GLOFOX ── */
+.ggrid {
+display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:9px; margin-bottom:24px;
+}
+.gc {
+background:var(–card-alt); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:13px 12px 11px;
+text-align:center; box-shadow:var(–shadow-sm); transition:box-shadow .2s;
+}
+.gc:hover { box-shadow:var(–shadow); }
+.gv { font-family:var(–fh); font-size:1.7rem; font-weight:600; color:var(–olive); line-height:1; margin-bottom:5px; letter-spacing:0.03em; }
+.gl { font-size:0.56rem; letter-spacing:0.16em; text-transform:uppercase; color:var(–ink-soft); font-weight:300; }
+
+/* ── TWO COL ── */
+.twocol { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px; }
+@media(max-width:680px){ .twocol { grid-template-columns:1fr; } }
+
+.pcard {
+background:var(–card); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:18px; box-shadow:var(–shadow-sm);
+}
+
+/* ── HITOS ── */
+.hito { display:flex; gap:9px; padding:8px 0; border-bottom:1px solid var(–ink-faint); align-items:flex-start; }
+.hito:last-child { border-bottom:none; }
+.hi { color:var(–olive3); font-size:0.65rem; margin-top:2px; flex-shrink:0; width:12px; text-align:center; }
+.ht { font-size:0.78rem; color:var(–ink-mid); line-height:1.42; flex:1; font-weight:300; }
+.htag { font-size:0.52rem; letter-spacing:0.13em; text-transform:uppercase; padding:2px 7px; border-radius:3px; flex-shrink:0; height:fit-content; margin-top:2px; }
+.tl { background:var(–green-bg); color:var(–green); border:1px solid var(–green-bd); }
+.td { background:var(–olive-bg); color:var(–olive); border:1px solid var(–olive-bd); }
+.ta { background:var(–amber-bg); color:var(–amber); border:1px solid var(–amber-bd); }
+
+/* ── PRIORIDADES ── */
+.pri { display:grid; grid-template-columns:16px 1fr auto; gap:9px; align-items:start; padding:8px 0; border-bottom:1px solid var(–ink-faint); transition:opacity .2s; }
+.pri:last-child { border-bottom:none; }
+.pri.done { opacity:.38; }
+.pri.done .pt { text-decoration:line-through; color:var(–ink-soft); }
+.pchk { width:15px; height:15px; border:1.5px solid var(–ink-faint2); border-radius:3px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.52rem; color:var(–olive); transition:all .2s; margin-top:1px; flex-shrink:0; }
+.pchk:hover { background:var(–olive-bg); border-color:var(–olive-bd); }
+.done .pchk { background:var(–green-bg); border-color:var(–green-bd); color:var(–green); }
+.pt { font-size:0.77rem; color:var(–ink-mid); line-height:1.4; font-weight:300; }
+.pr-r { display:flex; flex-direction:column; gap:3px; align-items:flex-end; }
+.own { font-size:0.55rem; letter-spacing:0.1em; color:var(–olive); background:var(–olive-bg); border:1px solid var(–olive-bd); padding:1px 6px; border-radius:3px; white-space:nowrap; }
+.st { font-size:0.52rem; letter-spacing:0.08em; padding:1px 6px; border-radius:3px; white-space:nowrap; }
+.su { background:var(–red-bg); color:var(–red); border:1px solid var(–red-bd); }
+.sp { background:var(–amber-bg); color:var(–amber); border:1px solid var(–amber-bd); }
+.sl { background:var(–green-bg); color:var(–green); border:1px solid var(–green-bd); }
+
+/* ── HISTÓRICO ── */
+.hist-row {
+display:flex; align-items:center; gap:8px;
+margin-bottom:24px; flex-wrap:wrap;
+}
+.hist-card {
+flex:1; min-width:120px;
+background:var(–card); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:14px 16px;
+box-shadow:var(–shadow-sm); text-align:center;
+}
+.hist-current {
+border-color:var(–olive-bd);
+background:var(–card);
+}
+.hist-mes { font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:var(–ink-soft); margin-bottom:6px; }
+.hist-val { font-family:var(–fh); font-size:1.5rem; font-weight:600; line-height:1; margin-bottom:4px; }
+.hist-val.cg { color:var(–green); }
+.hist-val.ca { color:var(–amber); }
+.hist-val.cr { color:var(–red); }
+.hist-label { font-size:0.58rem; color:var(–ink-soft); font-weight:300; }
+.hist-arrow { color:var(–ink-soft); font-size:1rem; flex-shrink:0; opacity:0.4; }
+@media(max-width:700px){ .hist-arrow { display:none; } }
+
+/* ── METAS ── */
+.metas-card {
+background:var(–card); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:20px;
+margin-bottom:24px; box-shadow:var(–shadow-sm);
+}
+.meta-hint { font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(–ink-soft); margin-bottom:14px; }
+.meta-item {
+display:flex; align-items:flex-start; gap:14px;
+padding:10px 0; border-bottom:1px solid var(–ink-faint);
+}
+.meta-item:last-child { border-bottom:none; padding-bottom:0; }
+.meta-num {
+font-family:var(–fh); font-size:1.3rem; font-weight:600;
+color:var(–olive-bd); line-height:1.2; flex-shrink:0;
+width:28px; text-align:center;
+}
+.meta-text {
+font-size:0.85rem; color:var(–ink-mid); font-weight:300;
+line-height:1.5; flex:1; outline:none;
+border-bottom:1px solid transparent; transition:border-color .2s;
+min-height:24px;
+}
+.meta-text:focus { border-bottom-color:var(–olive-bd); color:var(–ink); }
+.meta-text:empty::before { content:attr(placeholder); color:var(–ink-soft); font-style:italic; }
+
+/* ── NOTAS JUNTA ── */
+.notas-card {
+background:var(–card); border:1px solid var(–ink-faint);
+border-radius:var(–radius); padding:20px;
+margin-bottom:24px; box-shadow:var(–shadow-sm);
+}
+.notas-meta {
+font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase;
+color:var(–ink-soft); margin-bottom:12px;
+}
+.notas-text {
+font-size:0.85rem; color:var(–ink-mid); font-weight:300;
+line-height:1.7; outline:none; min-height:60px;
+border:1px solid transparent; border-radius:5px;
+padding:8px; transition:border-color .2s; margin:-8px;
+}
+.notas-text:focus { border-color:var(–ink-faint2); background:var(–bg); color:var(–ink); }
+
+/* ── FOOTER ── */
+.ftr { border-top:1px solid var(–ink-faint); padding-top:18px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.ftxt { font-size:0.58rem; letter-spacing:0.16em; text-transform:uppercase; color:var(–ink-soft); }
+
+/* ── MODAL ── */
+.mover { display:none; position:fixed; inset:0; background:rgba(44,42,36,0.5); z-index:500; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
+.mover.on { display:flex; }
+.modal { background:var(–card); border:1px solid var(–ink-faint2); border-radius:var(–radius); padding:28px; width:min(460px,92vw); max-height:85vh; overflow-y:auto; box-shadow:0 8px 32px rgba(44,42,36,0.16); }
+.modal h3 { font-family:var(–fh); font-size:1.1rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(–ink); margin-bottom:20px; }
+.mdiv { border:none; border-top:1px solid var(–ink-faint); margin:16px 0; }
+.msl { font-size:0.56rem; letter-spacing:0.2em; text-transform:uppercase; color:var(–olive2); margin-bottom:10px; }
+.mf { margin-bottom:12px; }
+.ml { font-size:0.58rem; letter-spacing:0.16em; text-transform:uppercase; color:var(–ink-soft); margin-bottom:4px; }
+.mi { width:100%; background:var(–bg); border:1px solid var(–ink-faint2); border-radius:5px; padding:8px 11px; color:var(–ink); font-family:var(–fb); font-size:0.88rem; outline:none; transition:border-color .2s; font-weight:300; }
+.mi:focus { border-color:var(–olive-bd); }
+.mgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.mact { display:flex; gap:8px; justify-content:flex-end; margin-top:20px; }
+
+/* ── LIVE DOT ── */
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.live { display:inline-block; width:5px; height:5px; border-radius:50%; background:var(–olive2); animation:pulse 2.5s ease infinite; margin-right:5px; vertical-align:middle; }
+
+/* ── FADE UP ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.kcard:nth-child(1){animation-delay:.03s} .kcard:nth-child(2){animation-delay:.07s}
+.kcard:nth-child(3){animation-delay:.11s} .kcard:nth-child(4){animation-delay:.15s}
+.kcard:nth-child(5){animation-delay:.19s} .kcard:nth-child(6){animation-delay:.23s}
+.kcard:nth-child(7){animation-delay:.27s} .kcard:nth-child(8){animation-delay:.31s}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+
+  <div class="hdr">
+    <div class="brand">
+      <svg viewBox="0 0 88 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="44" cy="26" rx="11" ry="11" stroke="#2c2a24" stroke-width="2.4" fill="none"/>
+        <path d="M33 15 Q18 26 33 37" stroke="#2c2a24" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M27 12 Q8 26 27 40" stroke="#2c2a24" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+        <path d="M55 15 Q70 26 55 37" stroke="#2c2a24" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M61 12 Q80 26 61 40" stroke="#2c2a24" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+      </svg>
+      <div class="btext">
+        <h1>Oráculo</h1>
+        <div class="sub"><span class="live"></span>Panel de socios · Wellness Club · San Pedro</div>
+      </div>
+    </div>
+    <div class="hdr-r">
+      <div class="utag" id="utag">Última actualización: Febrero 2026</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline" onclick="openM()">Actualizar mes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NORTHSTAR -->
+
+  <div class="ns">
+    <div class="ns-i">
+      <div class="ns-l">Misión</div>
+      <div class="ns-t">El mejor wellness club de México — exclusividad, producto y comunidad.</div>
+    </div>
+    <div class="ns-i">
+      <div class="ns-l">Siguiente hito</div>
+      <div class="ns-t">350 miembros · EBITDA >$200k constante · Arranque Oráculo II.</div>
+    </div>
+    <div class="ns-i">
+      <div class="ns-l">Horizonte</div>
+      <div class="ns-t">Oráculo I → Oráculo II (gym más grande) → más unidades de negocio.</div>
+    </div>
+  </div>
+
+  <!-- KPI SEMAPHORE -->
+
+  <div class="slbl">Semáforo — <span id="klbl">Febrero 2026</span></div>
+  <div class="kgrid">
+    <div class="kcard ca" id="k-mem"><div class="klbl">Miembros activos</div><div class="kval" id="v-mem">170</div><div class="kunit">de 350 meta</div><div class="knote">48% de cap. · meta Q4: 350</div></div>
+    <div class="kcard cg" id="k-ebi"><div class="klbl">EBITDA del mes</div><div class="kval" id="v-ebi">$201k</div><div class="kunit">MXN · margen 23.3%</div><div class="knote">Mejor mes histórico del club</div></div>
+    <div class="kcard cg" id="k-caj"><div class="klbl">Caja disponible</div><div class="kval" id="v-caj">$139k</div><div class="kunit">MXN · cierre Feb</div><div class="knote">De $709 en Jan → $139k en Feb</div></div>
+    <div class="kcard ca" id="k-cob"><div class="klbl">Cobertura deuda</div><div class="kval" id="v-cob">1.54x</div><div class="kunit">EBITDA / servicio</div><div class="knote">Meta: >2.0x sostenido</div></div>
+    <div class="kcard co" id="k-ing"><div class="klbl">Ingresos totales</div><div class="kval" id="v-ing">$862k</div><div class="kunit">MXN · +16% vs enero</div><div class="knote">Umbral operativo: $745k/mes</div></div>
+    <div class="kcard ca" id="k-pro"><div class="klbl">Ctas. por pagar</div><div class="kval" id="v-pro">$226k</div><div class="kunit">MXN · proveedores</div><div class="knote">Clean Value $82k pendiente</div></div>
+    <div class="kcard cg" id="k-flu"><div class="klbl">Flujo tras deuda</div><div class="kval" id="v-flu">+$71k</div><div class="kunit">MXN · primer mes positivo</div><div class="knote">EBITDA − intereses − capital</div></div>
+    <div class="kcard ct" id="k-dif"><div class="klbl">Ingreso diferido</div><div class="kval" id="v-dif">$524k</div><div class="kunit">MXN · cobrado x devengar</div><div class="knote">Ingresos futuros garantizados</div></div>
+  </div>
+
+  <!-- CHART -->
+
+  <div class="slbl">Tendencia financiera</div>
+  <div class="chcard">
+    <div class="chhead">
+      <div class="chtitle">Ingresos · Gastos · EBITDA mensual (MXN $000)</div>
+      <div class="chleg">
+        <div class="li"><div class="ld" style="background:rgba(44,42,36,0.35)"></div>Ingresos</div>
+        <div class="li"><div class="ld" style="background:var(--red)"></div>Gastos</div>
+        <div class="li"><div class="ld" style="background:var(--green)"></div>EBITDA +</div>
+        <div class="li"><div class="ld" style="background:rgba(138,61,48,0.45)"></div>EBITDA −</div>
+      </div>
+    </div>
+    <div class="bwrap">
+      <div class="bg-g"><div class="bi-in"><div class="b bi" data-tip="$527k" style="height:calc(527/900*122px)"></div><div class="b bg" data-tip="$541k" style="height:calc(541/900*122px)"></div><div class="b ben" data-tip="-$13k" style="height:calc(13/900*122px)"></div></div><span class="blbl">oct</span></div>
+      <div class="bg-g"><div class="bi-in"><div class="b bi" data-tip="$519k" style="height:calc(519/900*122px)"></div><div class="b bg" data-tip="$593k" style="height:calc(593/900*122px)"></div><div class="b ben" data-tip="-$74k" style="height:calc(74/900*122px)"></div></div><span class="blbl">nov</span></div>
+      <div class="bg-g"><div class="bi-in"><div class="b bi" data-tip="$506k" style="height:calc(506/900*122px)"></div><div class="b bg" data-tip="$752k" style="height:calc(752/900*122px)"></div><div class="b ben" data-tip="-$246k" style="height:calc(246/900*122px)"></div></div><span class="blbl">dic</span></div>
+      <div class="bg-g"><div class="bi-in"><div class="b bi" data-tip="$742k" style="height:calc(742/900*122px)"></div><div class="b bg" data-tip="$696k" style="height:calc(696/900*122px)"></div><div class="b bep" data-tip="+$47k" style="height:calc(47/900*122px)"></div></div><span class="blbl">ene</span></div>
+      <div class="bg-g"><div class="bi-in"><div class="b bi" data-tip="$862k" style="height:calc(862/900*122px)"></div><div class="b bg" data-tip="$660k" style="height:calc(660/900*122px)"></div><div class="b bep" data-tip="+$201k" style="height:calc(201/900*122px)"></div></div><span class="blbl">feb</span></div>
+      <div class="bg-g" style="opacity:.3"><div class="bi-in"><div class="b bph"></div><div class="b bph"></div><div class="b bph"></div></div><span class="blbl">mar →</span></div>
+    </div>
+  </div>
+
+  <!-- EXCEL -->
+
+  <div class="slbl">Dashboard financiero completo</div>
+  <div class="xcard">
+    <div class="xicon">📊</div>
+    <div class="xinfo">
+      <div class="xtitle">Oráculo — Dashboard Financiero.xlsx</div>
+      <div class="xdesc">P&L Oct 2025–Feb 2026 · Ventas & membresías · Deuda & flujo · Análisis estratégico · 5 hojas</div>
+    </div>
+    <div class="xmeta">Actualizado<br>Feb 2026</div>
+    <a href="Oraculo_Dashboard_Financiero.xlsx" download class="btn-dl">↓ Descargar</a>
+  </div>
+
+  <!-- DEUDA -->
+
+  <div class="slbl">Estructura de deuda</div>
+  <div class="dcard">
+    <div class="drow"><div class="dn">MAHG</div><div class="dtrack"><div class="dfill" style="width:76%"></div></div><div class="dval">$3,655,171</div></div>
+    <div class="drow"><div class="dn">SFHG</div><div class="dtrack"><div class="dfill" style="width:21%"></div></div><div class="dval">$1,003,510</div></div>
+    <div class="drow"><div class="dn">Maquinaria (JPOM)</div><div class="dtrack"><div class="dfill" style="width:3%;background:var(--amber)"></div></div><div class="dval">$147,232</div></div>
+    <div class="dfoot"><span class="dfl">Capital total vigente</span><span class="dfv">$4,805,913</span></div>
+  </div>
+
+  <!-- GLOFOX -->
+
+  <div class="slbl">Glofox — datos del club</div>
+  <div class="ggrid">
+    <div class="gc"><div class="gv" id="gf-act">170</div><div class="gl">Miembros activos</div></div>
+    <div class="gc"><div class="gv" id="gf-alt">—</div><div class="gl">Altas del mes</div></div>
+    <div class="gc"><div class="gv" id="gf-baj">—</div><div class="gl">Bajas del mes</div></div>
+    <div class="gc"><div class="gv" id="gf-ret">—</div><div class="gl">% Retención</div></div>
+    <div class="gc"><div class="gv" id="gf-cla">196</div><div class="gl">Clases / Hyrox</div></div>
+    <div class="gc"><div class="gv" id="gf-dp">19</div><div class="gl">Day passes</div></div>
+    <div class="gc"><div class="gv" id="gf-pic">90%</div><div class="gl">Uso horas pico</div></div>
+    <div class="gc"><div class="gv" id="gf-nps">—</div><div class="gl">NPS</div></div>
+  </div>
+
+  <!-- HITOS + PRIORIDADES -->
+
+  <div class="twocol">
+    <div>
+      <div class="slbl">Hitos del mes</div>
+      <div class="pcard">
+        <div class="hito"><div class="hi">◈</div><div class="ht">EBITDA $201k — mejor mes histórico. Margen 23.3%.</div><span class="htag tl">logro</span></div>
+        <div class="hito"><div class="hi">◈</div><div class="ht">Primer flujo positivo tras deuda en historia del club (+$71k).</div><span class="htag tl">logro</span></div>
+        <div class="hito"><div class="hi">◈</div><div class="ht">Equipo nuevo: Patricio + Federico aportaron $147k. Cascada Bienestar.</div><span class="htag td">decisión</span></div>
+        <div class="hito"><div class="hi">◈</div><div class="ht">Nuevas líneas activas: Hyrox Seminario y Breathwork.</div><span class="htag tl">logro</span></div>
+        <div class="hito"><div class="hi">◈</div><div class="ht">Proyecto Wansoft control inventarios cafetería arranca en marzo.</div><span class="htag td">decisión</span></div>
+        <div class="hito"><div class="hi">◈</div><div class="ht">Membresías anuales en cero en 2026. Palanca sin activar.</div><span class="htag ta">atención</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="slbl">Prioridades activas</div>
+      <div class="pcard">
+        <div class="pri" id="p1"><div class="pchk" onclick="tog('p1')"></div><div class="pt">Membresía Mid-Day (9am–4pm). Charly analiza capacidad.</div><div class="pr-r"><span class="own">Adrián</span><span class="st su">Urgente</span></div></div>
+        <div class="pri" id="p2"><div class="pchk" onclick="tog('p2')"></div><div class="pt">Remodelar baño de hombres. Asignar responsable y fecha.</div><div class="pr-r"><span class="own">Socios</span><span class="st su">Urgente</span></div></div>
+        <div class="pri" id="p3"><div class="pchk" onclick="tog('p3')"></div><div class="pt">Activar encargado de redes sociales (Balbina o externo).</div><div class="pr-r"><span class="own">Fede</span><span class="st sp">En proceso</span></div></div>
+        <div class="pri" id="p4"><div class="pchk" onclick="tog('p4')"></div><div class="pt">Reparar caminadora Technology + máquina 4 estaciones.</div><div class="pr-r"><span class="own">Pato</span><span class="st su">Esta semana</span></div></div>
+        <div class="pri" id="p5"><div class="pchk" onclick="tog('p5')"></div><div class="pt">Arrancar Wansoft — Fase 1 (catálogo + recetas + inventario).</div><div class="pr-r"><span class="own">Fede</span><span class="st sp">Marzo</span></div></div>
+        <div class="pri" id="p6"><div class="pchk" onclick="tog('p6')"></div><div class="pt">Lanzar página web SEO day pass / week pass para foráneos.</div><div class="pr-r"><span class="own">Fede</span><span class="st sp">Marzo</span></div></div>
+        <div class="pri" id="p7"><div class="pchk" onclick="tog('p7')"></div><div class="pt">Campaña membresías anuales ($48,960 c/u).</div><div class="pr-r"><span class="own">Adrián</span><span class="st sp">Q2</span></div></div>
+        <div class="pri" id="p8"><div class="pchk" onclick="tog('p8')"></div><div class="pt">Evaluar reestructura contrato Clean Value ($82k pendiente).</div><div class="pr-r"><span class="own">Socios</span><span class="st sp">Q2</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO RÁPIDO -->
+
+  <div class="slbl">Tendencia EBITDA — últimos meses</div>
+  <div class="hist-row">
+    <div class="hist-card" id="hc-oct">
+      <div class="hist-mes">Oct 2025</div>
+      <div class="hist-val cr" id="hv-oct">-$13k</div>
+      <div class="hist-label">EBITDA</div>
+    </div>
+    <div class="hist-arrow">→</div>
+    <div class="hist-card" id="hc-nov">
+      <div class="hist-mes">Nov 2025</div>
+      <div class="hist-val cr" id="hv-nov">-$74k</div>
+      <div class="hist-label">EBITDA</div>
+    </div>
+    <div class="hist-arrow">→</div>
+    <div class="hist-card" id="hc-dic">
+      <div class="hist-mes">Dic 2025</div>
+      <div class="hist-val cr" id="hv-dic">-$246k</div>
+      <div class="hist-label">EBITDA · Clean Value $104k</div>
+    </div>
+    <div class="hist-arrow">→</div>
+    <div class="hist-card" id="hc-ene">
+      <div class="hist-mes">Ene 2026</div>
+      <div class="hist-val ca" id="hv-ene">+$47k</div>
+      <div class="hist-label">EBITDA</div>
+    </div>
+    <div class="hist-arrow">→</div>
+    <div class="hist-card hist-current" id="hc-feb">
+      <div class="hist-mes">Feb 2026 ·  actual</div>
+      <div class="hist-val cg" id="hv-feb">+$201k</div>
+      <div class="hist-label">EBITDA · mejor mes histórico</div>
+    </div>
+  </div>
+
+  <!-- METAS DEL MES -->
+
+  <div class="slbl">Metas del mes</div>
+  <div class="metas-card">
+    <div class="meta-hint">Escribe aquí los 3 objetivos del mes — editable</div>
+    <div class="meta-item">
+      <span class="meta-num">01</span>
+      <div contenteditable="true" class="meta-text" placeholder="Escribe una meta...">Llegar a 185 miembros activos para fin de marzo.</div>
+    </div>
+    <div class="meta-item">
+      <span class="meta-num">02</span>
+      <div contenteditable="true" class="meta-text" placeholder="Escribe una meta...">Lanzar membresía Mid-Day y vender mínimo 10 en el mes.</div>
+    </div>
+    <div class="meta-item">
+      <span class="meta-num">03</span>
+      <div contenteditable="true" class="meta-text" placeholder="Escribe una meta...">Arrancar Fase 1 de Wansoft e implementar control de inventarios.</div>
+    </div>
+  </div>
+
+  <!-- NOTAS DE JUNTA -->
+
+  <div class="slbl">Notas de última junta</div>
+  <div class="notas-card">
+    <div class="notas-meta" id="notas-fecha">Última junta: — · <span style="cursor:pointer;color:var(--olive);text-decoration:underline" onclick="editFecha()">editar fecha</span></div>
+    <div contenteditable="true" class="notas-text" id="notas-body">Escribe aquí el acuerdo o decisión más importante de la última reunión de socios. Este campo es editable directamente.</div>
+  </div>
+
+  <!-- FOOTER -->
+
+  <div class="ftr">
+    <div class="ftxt">Oráculo Wellness Club · Panel de Socios · Confidencial</div>
+    <div class="ftxt">Actualizar mensualmente con datos del contador + Glofox</div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="mover" id="mover" onclick="closeOut(event)">
+  <div class="modal">
+    <h3>Actualizar datos</h3>
+    <div class="mf"><div class="ml">Mes de referencia</div><input class="mi" id="m-mes" placeholder="Ej: Marzo 2026"></div>
+    <div class="msl">Indicadores financieros</div>
+    <div class="mgrid">
+      <div class="mf"><div class="ml">Miembros activos</div><input class="mi" id="m-mem" type="number" placeholder="170"></div>
+      <div class="mf"><div class="ml">EBITDA (MXN)</div><input class="mi" id="m-ebi" type="number" placeholder="201218"></div>
+      <div class="mf"><div class="ml">Ingresos totales</div><input class="mi" id="m-ing" type="number" placeholder="861842"></div>
+      <div class="mf"><div class="ml">Caja disponible</div><input class="mi" id="m-caj" type="number" placeholder="139057"></div>
+      <div class="mf"><div class="ml">Ctas. por pagar</div><input class="mi" id="m-pro" type="number" placeholder="226015"></div>
+      <div class="mf"><div class="ml">Flujo tras deuda</div><input class="mi" id="m-flu" type="number" placeholder="71375"></div>
+      <div class="mf"><div class="ml">Ingreso diferido</div><input class="mi" id="m-dif" type="number" placeholder="523876"></div>
+      <div class="mf"><div class="ml">Cobertura deuda</div><input class="mi" id="m-cob" type="number" step="0.01" placeholder="1.54"></div>
+    </div>
+    <hr class="mdiv">
+    <div class="msl">Datos Glofox</div>
+    <div class="mgrid">
+      <div class="mf"><div class="ml">Altas del mes</div><input class="mi" id="m-alt" type="number"></div>
+      <div class="mf"><div class="ml">Bajas del mes</div><input class="mi" id="m-baj" type="number"></div>
+      <div class="mf"><div class="ml">% Retención</div><input class="mi" id="m-ret" placeholder="87%"></div>
+      <div class="mf"><div class="ml">Clases / Hyrox</div><input class="mi" id="m-cla" type="number"></div>
+      <div class="mf"><div class="ml">Day passes</div><input class="mi" id="m-dp" type="number"></div>
+      <div class="mf"><div class="ml">NPS</div><input class="mi" id="m-nps"></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-outline" onclick="closeM()">Cancelar</button>
+      <button class="btn btn-olive" onclick="save()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// MEMORIA LOCAL — todo se guarda automáticamente
+// ═══════════════════════════════════════════
+const LS = 'oraculo_panel_v1';
+
+function getState() {
+  try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch(e){ return {}; }
+}
+function setState(patch) {
+  const s = getState();
+  Object.assign(s, patch);
+  localStorage.setItem(LS, JSON.stringify(s));
+}
+
+// ── UTILIDADES ──
+function fmt(n){
+  if(Math.abs(n)>=1e6)return'$'+(n/1e6).toFixed(1)+'M';
+  if(Math.abs(n)>=1000)return(n<0?'-$':'$')+Math.round(Math.abs(n)/1000)+'k';
+  return'$'+n;
+}
+function clr(id,v){
+  const m={
+    'k-mem':{g:280,a:200},
+    'k-ebi':{g:150000,a:80000},
+    'k-caj':{g:150000,a:80000},
+    'k-cob':{g:2.0,a:1.2},
+    'k-ing':{g:745000,a:600000},
+    'k-pro':{g:150000,a:220000,inv:true},
+    'k-flu':{g:0,a:-50000},
+    'k-dif':{g:400000,a:250000}
+  };
+  const t=m[id]; if(!t)return'co';
+  if(t.inv)return v<=t.g?'cg':v<=t.a?'ca':'cr';
+  return v>=t.g?'cg':v>=t.a?'ca':'cr';
+}
+function setK(cid,vid,num,disp){
+  const c=document.getElementById(cid),v=document.getElementById(vid);
+  if(!c||!v)return;
+  v.textContent=disp||fmt(num);
+  c.className='kcard '+clr(cid,num);
+}
+
+// ── PRIORIDADES ──
+function tog(id){
+  const el=document.getElementById(id),ch=el.querySelector('.pchk');
+  el.classList.toggle('done');
+  ch.textContent=el.classList.contains('done')?'✓':'';
+  // guardar estado de todos los checks
+  const checks = {};
+  document.querySelectorAll('.pri').forEach(p=>{ checks[p.id]=p.classList.contains('done'); });
+  setState({checks});
+}
+
+// ── MODAL ──
+function openM(){
+  // pre-llenar modal con valores guardados
+  const s=getState();
+  if(s.mes) document.getElementById('m-mes').value=s.mes;
+  if(s.kpis){
+    const k=s.kpis;
+    if(k.mem) document.getElementById('m-mem').value=k.mem;
+    if(k.ebi) document.getElementById('m-ebi').value=k.ebi;
+    if(k.ing) document.getElementById('m-ing').value=k.ing;
+    if(k.caj) document.getElementById('m-caj').value=k.caj;
+    if(k.pro) document.getElementById('m-pro').value=k.pro;
+    if(k.flu) document.getElementById('m-flu').value=k.flu;
+    if(k.dif) document.getElementById('m-dif').value=k.dif;
+    if(k.cob) document.getElementById('m-cob').value=k.cob;
+  }
+  if(s.glofox){
+    const g=s.glofox;
+    if(g.alt) document.getElementById('m-alt').value=g.alt;
+    if(g.baj) document.getElementById('m-baj').value=g.baj;
+    if(g.ret) document.getElementById('m-ret').value=g.ret;
+    if(g.cla) document.getElementById('m-cla').value=g.cla;
+    if(g.dp)  document.getElementById('m-dp').value=g.dp;
+    if(g.nps) document.getElementById('m-nps').value=g.nps;
+  }
+  document.getElementById('mover').classList.add('on');
+}
+function closeM(){document.getElementById('mover').classList.remove('on');}
+function closeOut(e){if(e.target===document.getElementById('mover'))closeM();}
+
+// ── GUARDAR DATOS DEL MES ──
+function save(){
+  const mes=document.getElementById('m-mes').value;
+  const mem=+document.getElementById('m-mem').value;
+  const ebi=+document.getElementById('m-ebi').value;
+  const ing=+document.getElementById('m-ing').value;
+  const caj=+document.getElementById('m-caj').value;
+  const pro=+document.getElementById('m-pro').value;
+  const flu=+document.getElementById('m-flu').value;
+  const dif=+document.getElementById('m-dif').value;
+  const cob=+document.getElementById('m-cob').value;
+
+  if(mem)setK('k-mem','v-mem',mem,mem.toString());
+  if(ebi)setK('k-ebi','v-ebi',ebi,fmt(ebi));
+  if(caj)setK('k-caj','v-caj',caj,fmt(caj));
+  if(cob)setK('k-cob','v-cob',cob,cob.toFixed(2)+'x');
+  if(ing)setK('k-ing','v-ing',ing,fmt(ing));
+  if(pro)setK('k-pro','v-pro',pro,fmt(pro));
+  if(flu)setK('k-flu','v-flu',flu,(flu>=0?'+':'')+fmt(flu));
+  if(dif)setK('k-dif','v-dif',dif,fmt(dif));
+
+  const alt=document.getElementById('m-alt').value;
+  const baj=document.getElementById('m-baj').value;
+  const ret=document.getElementById('m-ret').value;
+  const cla=document.getElementById('m-cla').value;
+  const dp =document.getElementById('m-dp').value;
+  const nps=document.getElementById('m-nps').value;
+
+  const gfMap=[['m-alt','gf-alt'],['m-baj','gf-baj'],['m-ret','gf-ret'],['m-cla','gf-cla'],['m-dp','gf-dp'],['m-nps','gf-nps']];
+  gfMap.forEach(([mi,gi])=>{const v=document.getElementById(mi).value;if(v)document.getElementById(gi).textContent=v;});
+  if(mem)document.getElementById('gf-act').textContent=mem;
+
+  const now = new Date();
+  const fechaStr = now.toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}) + 
+                   ' ' + now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+
+  if(mes){
+    document.getElementById('utag').textContent='Actualizado: '+fechaStr+' · '+mes;
+    document.getElementById('klbl').textContent=mes;
+  }
+
+  // GUARDAR TODO EN MEMORIA
+  setState({
+    mes: mes||getState().mes,
+    ultimaActualizacion: fechaStr,
+    kpis: {mem,ebi,ing,caj,pro,flu,dif,cob},
+    glofox: {alt,baj,ret,cla,dp,nps}
+  });
+
+  closeM();
+}
+
+// ── NOTAS JUNTA ──
+function editFecha(){
+  const f=document.getElementById('notas-fecha');
+  const fecha=prompt('Fecha de la última junta (ej: 17 Mar 2026):');
+  if(fecha){
+    f.innerHTML='Última junta: '+fecha+' · <span style="cursor:pointer;color:var(--olive);text-decoration:underline" onclick="editFecha()">editar fecha</span>';
+    setState({notasFecha: fecha});
+  }
+}
+
+// ── CARGAR TODO AL ABRIR LA PÁGINA ──
+function loadState(){
+  const s=getState();
+
+  // KPIs
+  if(s.kpis){
+    const k=s.kpis;
+    if(k.mem)setK('k-mem','v-mem',k.mem,k.mem.toString());
+    if(k.ebi)setK('k-ebi','v-ebi',k.ebi,fmt(k.ebi));
+    if(k.caj)setK('k-caj','v-caj',k.caj,fmt(k.caj));
+    if(k.cob)setK('k-cob','v-cob',k.cob,k.cob.toFixed(2)+'x');
+    if(k.ing)setK('k-ing','v-ing',k.ing,fmt(k.ing));
+    if(k.pro)setK('k-pro','v-pro',k.pro,fmt(k.pro));
+    if(k.flu)setK('k-flu','v-flu',k.flu,(k.flu>=0?'+':'')+fmt(k.flu));
+    if(k.dif)setK('k-dif','v-dif',k.dif,fmt(k.dif));
+  }
+
+  // Glofox
+  if(s.glofox){
+    const g=s.glofox;
+    const gfMap={alt:'gf-alt',baj:'gf-baj',ret:'gf-ret',cla:'gf-cla',dp:'gf-dp',nps:'gf-nps'};
+    Object.entries(gfMap).forEach(([k,id])=>{ if(g[k]) document.getElementById(id).textContent=g[k]; });
+    if(s.kpis&&s.kpis.mem) document.getElementById('gf-act').textContent=s.kpis.mem;
+  }
+
+  // Header
+  if(s.ultimaActualizacion&&s.mes){
+    document.getElementById('utag').textContent='Actualizado: '+s.ultimaActualizacion+' · '+s.mes;
+    document.getElementById('klbl').textContent=s.mes;
+  }
+
+  // Checks de prioridades
+  if(s.checks){
+    Object.entries(s.checks).forEach(([id,done])=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+      if(done){
+        el.classList.add('done');
+        el.querySelector('.pchk').textContent='✓';
+      }
+    });
+  }
+
+  // Metas
+  if(s.metas){
+    const mels=document.querySelectorAll('.meta-text');
+    s.metas.forEach((txt,i)=>{ if(mels[i]&&txt) mels[i].textContent=txt; });
+  }
+
+  // Notas
+  if(s.notasBody) document.getElementById('notas-body').textContent=s.notasBody;
+  if(s.notasFecha){
+    document.getElementById('notas-fecha').innerHTML=
+      'Última junta: '+s.notasFecha+' · <span style="cursor:pointer;color:var(--olive);text-decoration:underline" onclick="editFecha()">editar fecha</span>';
+  }
+}
+
+// ── AUTO-GUARDAR metas y notas al escribir ──
+document.addEventListener('DOMContentLoaded', function(){
+  loadState();
+
+  // Metas — guardar al perder foco
+  document.querySelectorAll('.meta-text').forEach((el,i)=>{
+    el.addEventListener('blur',()=>{
+      const s=getState();
+      const metas=s.metas||['','',''];
+      metas[i]=el.textContent.trim();
+      setState({metas});
+    });
+  });
+
+  // Notas — guardar al perder foco
+  const nb=document.getElementById('notas-body');
+  if(nb){
+    nb.addEventListener('blur',()=>{
+      setState({notasBody: nb.textContent.trim()});
+    });
+  }
+});
+</script>
+
+</body>
+</html>
