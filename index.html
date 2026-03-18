@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#e8e2d6; --bg2:#dfd9cc; --card:#f2ede4; --card2:#ede7dc;
+  --bg:#d9d3c7; --bg2:#cfc9bc; --card:#f2ede4; --card2:#ede7dc;
   --ink:#2c2a24; --ink-mid:#4e4a3e; --ink-soft:#8c8679;
   --b1:rgba(44,42,36,0.12); --b2:rgba(44,42,36,0.22);
   --olive:#526130; --olive2:#637540; --olive3:#7d9452;
@@ -190,11 +190,15 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-weight:300
 .mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
 
 /* SECTION WRAPPERS */
-.sec-wrap{background:var(–card);border:1px solid var(–b1);border-radius:var(–r);padding:20px;margin-bottom:16px;box-shadow:var(–sh)}
+.sec-wrap{background:#ffffff;border:1px solid rgba(44,42,36,0.18);border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 2px 12px rgba(44,42,36,0.10),0 1px 4px rgba(44,42,36,0.07)}
 .sec-wrap .slbl{margin-bottom:14px}
 .sec-wrap .kgrid,.sec-wrap .hist,.sec-wrap .ggrid,.sec-wrap .twocol{margin-bottom:0}
 .sec-wrap .chcard,.sec-wrap .dcard,.sec-wrap .mcard,.sec-wrap .ncard,.sec-wrap .xcard{margin-bottom:0;box-shadow:none;border:none;padding:0;background:transparent}
-.sec-wrap .ns{margin-bottom:0}
+.sec-wrap .ns{margin-bottom:0;box-shadow:none}
+.sec-wrap .kcard{background:#f9f7f3}
+.sec-wrap .gc{background:#f2ede4}
+.sec-wrap .hcard{background:#f9f7f3}
+.sec-wrap .pcard{background:#f9f7f3}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .live{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(–olive2);animation:pulse 2.5s ease infinite;margin-right:5px;vertical-align:middle}
