@@ -189,6 +189,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-weight:300
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
 
+/* SECTION WRAPPERS */
+.sec-wrap{background:var(–card);border:1px solid var(–b1);border-radius:var(–r);padding:20px;margin-bottom:16px;box-shadow:var(–sh)}
+.sec-wrap .slbl{margin-bottom:14px}
+.sec-wrap .kgrid,.sec-wrap .hist,.sec-wrap .ggrid,.sec-wrap .twocol{margin-bottom:0}
+.sec-wrap .chcard,.sec-wrap .dcard,.sec-wrap .mcard,.sec-wrap .ncard,.sec-wrap .xcard{margin-bottom:0;box-shadow:none;border:none;padding:0;background:transparent}
+.sec-wrap .ns{margin-bottom:0}
+
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .live{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(–olive2);animation:pulse 2.5s ease infinite;margin-right:5px;vertical-align:middle}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -226,53 +233,63 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-weight:300
 
 <!-- NORTHSTAR -->
 
-<div class="ns">
-  <div class="ns-i"><div class="ns-l">Misión</div><div class="ns-t">El mejor wellness club de México — exclusividad, producto y comunidad.</div></div>
-  <div class="ns-i"><div class="ns-l">Siguiente hito</div><div class="ns-t">350 miembros · EBITDA >$200k constante · Arranque Oráculo II.</div></div>
-  <div class="ns-i"><div class="ns-l">Horizonte</div><div class="ns-t">Oráculo I → Oráculo II (gym más grande) → más unidades de negocio.</div></div>
+<div class="sec-wrap">
+  <div class="slbl">Misión · Hito · Horizonte</div>
+  <div class="ns">
+    <div class="ns-i"><div class="ns-l">Misión</div><div class="ns-t">El mejor wellness club de México — exclusividad, producto y comunidad.</div></div>
+    <div class="ns-i"><div class="ns-l">Siguiente hito</div><div class="ns-t">350 miembros · EBITDA >$200k constante · Arranque Oráculo II.</div></div>
+    <div class="ns-i"><div class="ns-l">Horizonte</div><div class="ns-t">Oráculo I → Oráculo II (gym más grande) → más unidades de negocio.</div></div>
+  </div>
 </div>
 
 <!-- SEMÁFORO -->
 
-<div class="slbl">Semáforo — <span id="klbl">Febrero 2026</span></div>
-<div class="kgrid">
-  <div class="kcard ca" id="k-mem"><div class="klbl">Miembros activos</div><div class="kval" id="v-mem">170</div><div class="kunit">de 350 meta</div><div class="knote">48% de cap. · meta Q4: 350</div></div>
-  <div class="kcard cg" id="k-ebi"><div class="klbl">EBITDA del mes</div><div class="kval" id="v-ebi">$201k</div><div class="kunit">MXN · margen 23.3%</div><div class="knote">Mejor mes histórico del club</div></div>
-  <div class="kcard cg" id="k-flu"><div class="klbl">Flujo tras deuda</div><div class="kval" id="v-flu">+$71k</div><div class="kunit">MXN · primer mes positivo</div><div class="knote">EBITDA − intereses − capital</div></div>
-  <div class="kcard cg" id="k-caj"><div class="klbl">Caja disponible</div><div class="kval" id="v-caj">$139k</div><div class="kunit">MXN · cierre Feb</div><div class="knote">Desde $709 en inicio de Ene</div></div>
-  <div class="kcard co" id="k-ing"><div class="klbl">Ingresos totales</div><div class="kval" id="v-ing">$862k</div><div class="kunit">MXN · +16% vs enero</div><div class="knote">Umbral breakeven: $732k/mes</div></div>
-  <div class="kcard ca" id="k-cob"><div class="klbl">Cobertura deuda</div><div class="kval" id="v-cob">1.55x</div><div class="kunit">EBITDA / servicio deuda</div><div class="knote">Meta: >2.0x sostenido</div></div>
-  <div class="kcard ca" id="k-pro"><div class="klbl">Ctas. por pagar</div><div class="kval" id="v-pro">$226k</div><div class="kunit">MXN · proveedores</div><div class="knote">Clean Value $83k pendiente</div></div>
-  <div class="kcard ct" id="k-dif"><div class="klbl">Ingreso diferido</div><div class="kval" id="v-dif">$524k</div><div class="kunit">MXN · cobrado x devengar</div><div class="knote">Ingresos futuros garantizados</div></div>
+<div class="sec-wrap">
+  <div class="slbl">Semáforo — <span id="klbl">Febrero 2026</span></div>
+  <div class="kgrid">
+    <div class="kcard ca" id="k-mem"><div class="klbl">Miembros activos</div><div class="kval" id="v-mem">170</div><div class="kunit">de 350 meta</div><div class="knote">48% de cap. · meta Q4: 350</div></div>
+    <div class="kcard cg" id="k-ebi"><div class="klbl">EBITDA del mes</div><div class="kval" id="v-ebi">$201k</div><div class="kunit">MXN · margen 23.3%</div><div class="knote">Mejor mes histórico del club</div></div>
+    <div class="kcard cg" id="k-flu"><div class="klbl">Flujo tras deuda</div><div class="kval" id="v-flu">+$71k</div><div class="kunit">MXN · primer mes positivo</div><div class="knote">EBITDA − intereses − capital</div></div>
+    <div class="kcard cg" id="k-caj"><div class="klbl">Caja disponible</div><div class="kval" id="v-caj">$139k</div><div class="kunit">MXN · cierre Feb</div><div class="knote">Desde $709 en inicio de Ene</div></div>
+    <div class="kcard co" id="k-ing"><div class="klbl">Ingresos totales</div><div class="kval" id="v-ing">$862k</div><div class="kunit">MXN · +16% vs enero</div><div class="knote">Umbral breakeven: $732k/mes</div></div>
+    <div class="kcard ca" id="k-cob"><div class="klbl">Cobertura deuda</div><div class="kval" id="v-cob">1.55x</div><div class="kunit">EBITDA / servicio deuda</div><div class="knote">Meta: >2.0x sostenido</div></div>
+    <div class="kcard ca" id="k-pro"><div class="klbl">Ctas. por pagar</div><div class="kval" id="v-pro">$226k</div><div class="kunit">MXN · proveedores</div><div class="knote">Clean Value $83k pendiente</div></div>
+    <div class="kcard ct" id="k-dif"><div class="klbl">Ingreso diferido</div><div class="kval" id="v-dif">$524k</div><div class="kunit">MXN · cobrado x devengar</div><div class="knote">Ingresos futuros garantizados</div></div>
+  </div>
 </div>
 
 <!-- HISTÓRICO EBITDA -->
 
-<div class="slbl">Tendencia EBITDA — historial completo</div>
-<div class="hist">
-  <div class="hcard"><div class="hmes">Oct 2025</div><div class="hval cr">-$97k</div><div class="hnote">EBITDA · Primer mes completo</div></div>
-  <div class="hcard"><div class="hmes">Nov 2025</div><div class="hval cr">-$71k</div><div class="hnote">EBITDA · Caja cerró en $1.5k</div></div>
-  <div class="hcard"><div class="hmes">Dic 2025</div><div class="hval cr">-$262k</div><div class="hnote">Clean Value $104k acumulado</div></div>
-  <div class="hcard"><div class="hmes">Ene 2026</div><div class="hval ca">+$47k</div><div class="hnote">EBITDA · Primer mes positivo</div></div>
-  <div class="hcard actual"><div class="hmes">Feb 2026 · actual</div><div class="hval cg">+$201k</div><div class="hnote">Mejor mes histórico · 23.3%</div></div>
+<div class="sec-wrap">
+  <div class="slbl">Tendencia EBITDA — historial completo</div>
+  <div class="hist">
+    <div class="hcard"><div class="hmes">Oct 2025</div><div class="hval cr">-$97k</div><div class="hnote">EBITDA · Primer mes completo</div></div>
+    <div class="hcard"><div class="hmes">Nov 2025</div><div class="hval cr">-$71k</div><div class="hnote">EBITDA · Caja cerró en $1.5k</div></div>
+    <div class="hcard"><div class="hmes">Dic 2025</div><div class="hval cr">-$262k</div><div class="hnote">Clean Value $104k acumulado</div></div>
+    <div class="hcard"><div class="hmes">Ene 2026</div><div class="hval ca">+$47k</div><div class="hnote">EBITDA · Primer mes positivo</div></div>
+    <div class="hcard actual"><div class="hmes">Feb 2026 · actual</div><div class="hval cg">+$201k</div><div class="hnote">Mejor mes histórico · 23.3%</div></div>
+  </div>
 </div>
 
 <!-- GLOFOX -->
 
-<div class="slbl">Glofox — datos del club</div>
-<div class="ggrid">
-  <div class="gc"><div class="gv" id="gf-act">170</div><div class="gl">Miembros activos</div></div>
-  <div class="gc"><div class="gv" id="gf-alt">—</div><div class="gl">Altas del mes</div></div>
-  <div class="gc"><div class="gv" id="gf-baj">—</div><div class="gl">Bajas del mes</div></div>
-  <div class="gc"><div class="gv" id="gf-ret">—</div><div class="gl">% Retención</div></div>
-  <div class="gc"><div class="gv" id="gf-cla">196</div><div class="gl">Clases / Hyrox</div></div>
-  <div class="gc"><div class="gv" id="gf-dp">19</div><div class="gl">Day passes</div></div>
-  <div class="gc"><div class="gv" id="gf-pic">90%</div><div class="gl">Uso horas pico</div></div>
-  <div class="gc"><div class="gv" id="gf-nps">—</div><div class="gl">NPS</div></div>
+<div class="sec-wrap">
+  <div class="slbl">Glofox — datos del club</div>
+  <div class="ggrid">
+    <div class="gc"><div class="gv" id="gf-act">170</div><div class="gl">Miembros activos</div></div>
+    <div class="gc"><div class="gv" id="gf-alt">—</div><div class="gl">Altas del mes</div></div>
+    <div class="gc"><div class="gv" id="gf-baj">—</div><div class="gl">Bajas del mes</div></div>
+    <div class="gc"><div class="gv" id="gf-ret">—</div><div class="gl">% Retención</div></div>
+    <div class="gc"><div class="gv" id="gf-cla">196</div><div class="gl">Clases / Hyrox</div></div>
+    <div class="gc"><div class="gv" id="gf-dp">19</div><div class="gl">Day passes</div></div>
+    <div class="gc"><div class="gv" id="gf-pic">90%</div><div class="gl">Uso horas pico</div></div>
+    <div class="gc"><div class="gv" id="gf-nps">—</div><div class="gl">NPS</div></div>
+  </div>
 </div>
 
 <!-- GRÁFICA -->
 
+<div class="sec-wrap">
 <div class="slbl">Tendencia financiera — Oct 2025 a Feb 2026</div>
 <div class="chcard">
   <div class="chhead">
@@ -320,10 +337,12 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-weight:300
       <div class="b bph"></div><div class="b bph"></div><div class="b bph"></div>
     </div><span class="blbl">mar→</span></div>
   </div>
-</div>
+</div><!-- end chcard -->
+</div><!-- end sec-wrap gráfica -->
 
 <!-- HITOS + PRIORIDADES -->
 
+<div class="sec-wrap">
 <div class="twocol">
   <div>
     <div class="slbl">Hitos del mes</div>
@@ -349,38 +368,46 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-weight:300
       <div class="pri" id="p8"><div class="pchk" onclick="tog('p8')"></div><div class="pt">Evaluar reestructura contrato Clean Value ($82k pendiente · $18-19k/mes).</div><div class="pr-r"><span class="own">Socios</span><span class="st sp">Q2</span></div></div>
     </div>
   </div>
-</div>
+</div><!-- end twocol -->
+</div><!-- end sec-wrap hitos+prio -->
 
 <!-- DEUDA -->
 
+<div class="sec-wrap">
 <div class="slbl">Estructura de deuda — cierre Feb 2026</div>
 <div class="dcard">
   <div class="drow"><div class="dn">MAHG</div><div class="dtrack"><div class="dfill" style="width:76%"></div></div><div class="dval">$3,655,171</div></div>
   <div class="drow"><div class="dn">SFHG</div><div class="dtrack"><div class="dfill" style="width:21%"></div></div><div class="dval">$1,003,510</div></div>
   <div class="drow"><div class="dn">Maquinaria (JPOM)</div><div class="dtrack"><div class="dfill" style="width:3%;background:var(--amber)"></div></div><div class="dval">$147,232</div></div>
   <div class="dfoot"><span class="dfl">Capital total vigente</span><span class="dfv">$4,805,913</span></div>
-</div>
+</div><!-- end dcard -->
+</div><!-- end sec-wrap deuda -->
 
 <!-- METAS -->
 
+<div class="sec-wrap">
 <div class="slbl">Metas del mes</div>
 <div class="mcard">
   <div class="mhint">Editable — toca para escribir</div>
   <div class="mitem"><span class="mnum">01</span><div contenteditable="true" class="mtxt" placeholder="Escribe una meta...">Llegar a 185 miembros activos para fin de marzo.</div></div>
   <div class="mitem"><span class="mnum">02</span><div contenteditable="true" class="mtxt" placeholder="Escribe una meta...">Lanzar membresía Mid-Day y vender mínimo 10 en el mes.</div></div>
   <div class="mitem"><span class="mnum">03</span><div contenteditable="true" class="mtxt" placeholder="Escribe una meta...">Arrancar Fase 1 de Wansoft — control de inventarios cafetería.</div></div>
-</div>
+</div><!-- end mcard -->
+</div><!-- end sec-wrap metas -->
 
 <!-- NOTAS -->
 
+<div class="sec-wrap">
 <div class="slbl">Notas de última junta</div>
 <div class="ncard">
   <div class="nmeta" id="nfecha">Última junta: — · <span style="cursor:pointer;color:var(--olive);text-decoration:underline" onclick="editF()">editar fecha</span></div>
   <div contenteditable="true" class="ntxt" id="nbody">Escribe aquí el acuerdo más importante de la última reunión. Campo editable.</div>
-</div>
+</div><!-- end ncard -->
+</div><!-- end sec-wrap notas -->
 
 <!-- EXCEL -->
 
+<div class="sec-wrap">
 <div class="slbl">Dashboard financiero completo</div>
 <div class="xcard">
   <div class="xicon">📊</div>
@@ -389,7 +416,8 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-weight:300
     <div class="xdesc">P&L Oct 2025–Feb 2026 · Ventas & membresías · Deuda & flujo · Análisis estratégico · 5 hojas</div>
   </div>
   <a href="Oraculo_Dashboard_Financiero.xlsx" download class="btn-dl">↓ Descargar</a>
-</div>
+</div><!-- end xcard -->
+</div><!-- end sec-wrap excel -->
 
 <!-- FOOTER -->
 
