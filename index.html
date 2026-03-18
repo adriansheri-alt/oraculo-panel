@@ -247,7 +247,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-weight:300
   </div>
 </div>
 
-<div class="wrap">
+<div class="wrap" id="main-content" style="display:none">
 
 <!-- HEADER -->
 
@@ -510,6 +510,7 @@ function checkPwd(){
   if(val === 'fedepatosherisebas2026'){
     sessionStorage.setItem(PWD_KEY,'1');
     document.getElementById('login-screen').style.display='none';
+    document.getElementById('main-content').style.display='block';
     err.textContent='';
   } else {
     err.textContent='Código incorrecto. Intenta de nuevo.';
@@ -520,6 +521,7 @@ function checkPwd(){
 // Auto-check if already authenticated this session
 if(sessionStorage.getItem(PWD_KEY)==='1'){
   document.getElementById('login-screen').style.display='none';
+  document.getElementById('main-content').style.display='block';
 }
 
 const LS='ora_v3';
