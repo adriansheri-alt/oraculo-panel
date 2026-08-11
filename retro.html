@@ -277,7 +277,7 @@
       </div>
     </div>
 
-    <div class="campo">
+    <div class="campo" id="campo-quefalta" style="display:none">
       <label class="q">¿Qué faltaría para que sí compraras?</label>
       <p class="hint">Elige lo que aplique — son solo ejemplos, no la lista completa. Si es otra cosa, cuéntanos abajo en comentarios.</p>
       <div class="pills" id="quefalta">
@@ -408,6 +408,14 @@ function toggleLista(cerrar) {
       grupo.querySelectorAll('button').forEach(x => x.classList.remove('on'));
       b.classList.add('on');
       sel[id] = b.textContent;
+      if (id === 'compraria') {
+        const indeciso = sel.compraria === 'Aún no sé' || sel.compraria === 'Nada por ahora';
+        document.getElementById('campo-quefalta').style.display = indeciso ? '' : 'none';
+        if (!indeciso) {
+          document.getElementById('quefalta').querySelectorAll('button.on').forEach(x => x.classList.remove('on'));
+          sel.quefalta = [];
+        }
+      }
     });
   });
 });
