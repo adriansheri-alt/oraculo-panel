@@ -281,8 +281,9 @@
       <label class="q">¿Qué faltaría para que sí compraras?</label>
       <p class="hint">Elige lo que aplique — son solo ejemplos, no la lista completa. Si es otra cosa, cuéntanos abajo en comentarios.</p>
       <div class="pills" id="quefalta">
-        <button type="button">Mejor precio</button><button type="button">Más horarios</button><button type="button">Acceso a sauna / recovery</button><button type="button">Acceso a regaderas</button><button type="button">Acceso al gym el día de la clase</button><button type="button">Más variedad de clases</button><button type="button">Nada, así está bien</button>
+        <button type="button">Mejor precio</button><button type="button">Más horarios</button><button type="button">Acceso a sauna / recovery</button><button type="button">Acceso a regaderas</button><button type="button">Más variedad de clases</button><button type="button">Otro</button><button type="button">Nada, así está bien</button>
       </div>
+      <input type="text" id="otroTexto" placeholder="Cuéntanos qué te haría falta" style="display:none; margin-top:10px">
     </div>
 
     <div class="campo">
@@ -458,6 +459,8 @@ sel.quefalta = [];
 (() => {
   const qf = document.getElementById('quefalta');
   const NADA = 'Nada, así está bien';
+  const OTRO = 'Otro';
+  const otroTexto = document.getElementById('otroTexto');
   qf.querySelectorAll('button').forEach(b => {
     b.addEventListener('click', () => {
       if (b.classList.contains('on')) {
@@ -469,6 +472,10 @@ sel.quefalta = [];
           qf.querySelectorAll('button').forEach(x => { if (x.textContent === NADA) x.classList.remove('on'); });
         }
         b.classList.add('on');
+      }
+      if (b.textContent === OTRO) {
+        otroTexto.style.display = b.classList.contains('on') ? '' : 'none';
+        if (!b.classList.contains('on')) otroTexto.value = '';
       }
       sel.quefalta = [...qf.querySelectorAll('button.on')].map(x => x.textContent);
     });
@@ -505,7 +512,11 @@ function enviar() {
     intensidad: sel.intensidad,
     volverias: sel.volverias,
     compraria: sel.compraria,
-    queFalta: (sel.quefalta || []).join(' | '),
+    queFalta: (sel.quefalta || []).map(t => {
+      if (t !== 'Otro') return t;
+      const texto = document.getElementById('otroTexto').value.trim();
+      return texto ? `Otro: ${texto}` : 'Otro';
+    }).join(' | '),
     comentario: document.getElementById('comentario').value.trim()
   };
 
