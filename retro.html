@@ -265,6 +265,7 @@
       <div class="pills" id="volverias">
         <button type="button">Sí, seguro</button><button type="button">Tal vez</button><button type="button">No</button>
       </div>
+      <input type="text" id="porqueNo" placeholder="¿Por qué no volverías?" style="display:none; margin-top:12px">
     </div>
 
     <div class="divisor"></div>
@@ -417,6 +418,12 @@ function toggleLista(cerrar) {
           sel.quefalta = [];
         }
       }
+      if (id === 'volverias') {
+        const noVuelve = sel.volverias === 'No';
+        const porqueNo = document.getElementById('porqueNo');
+        porqueNo.style.display = noVuelve ? '' : 'none';
+        if (!noVuelve) porqueNo.value = '';
+      }
     });
   });
 });
@@ -511,6 +518,7 @@ function enviar() {
     coachCalif: sel.coach,
     intensidad: sel.intensidad,
     volverias: sel.volverias,
+    porqueNo: sel.volverias === 'No' ? document.getElementById('porqueNo').value.trim() : '',
     compraria: sel.compraria,
     queFalta: (sel.quefalta || []).map(t => {
       if (t !== 'Otro') return t;
