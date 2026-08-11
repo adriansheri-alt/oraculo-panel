@@ -124,6 +124,31 @@
     color:var(--dim); margin:-4px 0 12px;
   }
 
+  /* celular con prefijo de país */
+  .tel-row { display:flex; gap:8px; position:relative; }
+  .tel-row input { flex:1; min-width:0; }
+  .tel-pref {
+    display:flex; align-items:center; gap:7px; flex-shrink:0;
+    background:var(--carbon); border:1px solid var(--linea); border-radius:12px;
+    color:var(--bone); font-family:'DM Sans',sans-serif; font-size:16px;
+    padding:0 14px; cursor:pointer; transition:border-color .2s;
+  }
+  .tel-pref:active { border-color:var(--bone); }
+  .flechita { color:var(--dim); font-size:11px; }
+  .tel-menu {
+    position:absolute; top:calc(100% + 6px); left:0; z-index:5;
+    background:var(--carbon); border:1px solid var(--linea); border-radius:12px;
+    overflow:hidden; display:none; min-width:200px;
+  }
+  .tel-menu.abierta { display:block; }
+  .tel-menu button {
+    display:flex; align-items:center; gap:10px; width:100%;
+    background:none; border:none; color:var(--bone);
+    font-family:'DM Sans',sans-serif; font-size:15px;
+    padding:13px 16px; cursor:pointer; text-align:left;
+  }
+  .tel-menu button:active { background:rgba(245,243,239,0.07); }
+
   .enviar {
     width:100%; background:var(--blanco); border:none; color:var(--negro);
     font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px;
@@ -168,13 +193,25 @@
     <p class="sub">Tu opinión define cómo evolucionan</p>
 
     <div class="campo">
+      <p class="hint" style="margin:0 0 10px">Si prefieres, tu retro puede ser 100% anónima — nos importa tu opinión honesta, no quién la dice.</p>
+      <div class="pills"><button type="button" id="anonBtn">Responder anónimo</button></div>
+    </div>
+
+    <div class="campo" id="campo-nombre">
       <label class="q">Nombre <em>*</em></label>
       <input type="text" id="nombre" placeholder="Tu nombre" autocomplete="name">
     </div>
 
-    <div class="campo">
+    <div class="campo" id="campo-telefono">
       <label class="q">Celular <em>*</em></label>
-      <input type="tel" id="telefono" placeholder="81 0000 0000" autocomplete="tel" inputmode="numeric">
+      <div class="tel-row">
+        <button type="button" class="tel-pref" id="telPref">🇲🇽 +52 <span class="flechita">▾</span></button>
+        <div class="tel-menu" id="telMenu">
+          <button type="button" data-code="+52" data-flag="🇲🇽" data-ph="81 1234 5678">🇲🇽 México +52</button>
+          <button type="button" data-code="+1" data-flag="🇺🇸" data-ph="555 123 4567">🇺🇸 USA +1</button>
+        </div>
+        <input type="tel" id="telefono" placeholder="81 1234 5678" autocomplete="tel" inputmode="numeric">
+      </div>
     </div>
 
     <div class="campo">
@@ -367,6 +404,39 @@ function toggleLista(cerrar) {
   });
 });
 
+// modo anónimo: oculta nombre y celular
+let anon = false;
+document.getElementById('anonBtn').addEventListener('click', function() {
+  anon = !anon;
+  this.classList.toggle('on', anon);
+  document.getElementById('campo-nombre').style.display = anon ? 'none' : '';
+  document.getElementById('campo-telefono').style.display = anon ? 'none' : '';
+});
+
+// celular: prefijo de país + formato automático
+let pais = { code: '+52', fmt: [2,4,4] };
+const telInput = document.getElementById('telefono');
+const telPref = document.getElementById('telPref');
+const telMenu = document.getElementById('telMenu');
+telPref.addEventListener('click', () => telMenu.classList.toggle('abierta'));
+telMenu.querySelectorAll('button').forEach(b => {
+  b.addEventListener('click', () => {
+    pais = { code: b.dataset.code, fmt: b.dataset.code === '+52' ? [2,4,4] : [3,3,4] };
+    telPref.innerHTML = `${b.dataset.flag} ${b.dataset.code} <span class="flechita">▾</span>`;
+    telInput.placeholder = b.dataset.ph;
+    telMenu.classList.remove('abierta');
+    formatearTel();
+  });
+});
+function formatearTel() {
+  let d = telInput.value.replace(/\D/g, '');
+  if (d.length > 10) d = d.slice(-10); // autofill con lada: nos quedamos con los 10 dígitos
+  const out = []; let i = 0;
+  for (const n of pais.fmt) { if (i >= d.length) break; out.push(d.slice(i, i + n)); i += n; }
+  telInput.value = out.join(' ');
+}
+telInput.addEventListener('input', formatearTel);
+
 // multi-select: qué faltaría para comprar
 sel.quefalta = [];
 (() => {
@@ -395,7 +465,7 @@ function enviar() {
   const err = document.getElementById('err');
   const btn = document.getElementById('btn');
 
-  const obligatorios = nombre && telefono && sel.clase &&
+  const obligatorios = (anon || (nombre && telefono)) && sel.clase &&
                        sel.general && sel.coach && sel.intensidad && sel.volverias && sel.compraria;
   if (!obligatorios) {
     err.textContent = !sel.clase ? 'Selecciona la clase a la que asististe' : 'Faltan campos marcados con *';
@@ -408,7 +478,8 @@ function enviar() {
 
   const data = {
     fecha: new Date().toLocaleString('es-MX'),
-    nombre, telefono,
+    nombre: anon ? 'Anónimo' : nombre,
+    telefono: anon ? '' : `${pais.code} ${telefono}`,
     dia: sel.dia,
     hora: sel.clase.h,
     clase: sel.clase.c,
